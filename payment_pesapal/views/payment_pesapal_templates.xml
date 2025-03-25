@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="redirect_form" name="Pesapal redirect form">
+            <form t-att-action="redirect_url" method="post">
+                <input type="hidden" name="OrderTrackingId" t-att-value="order_tracking_id"/>
+            </form>
+        </template>
+    </data>
+</odoo>
+

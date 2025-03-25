@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="provider_form_pesapal" model="ir.ui.view">
+            <field name="name">PesaPal Payment Gateway Settings</field>
+            <field name="model">payment.provider</field>
+            <field name="inherit_id" ref="payment.payment_provider_form"/>
+            <field name="arch" type="xml">
+                <group name="provider_credentials" position='inside'>
+                        <group invisible="code != 'pesapal'">
+                            <field name="pesapal_consumer_key"/>
+                            <field name="pesapal_consumer_secret"/>
+                            <field name="pesapal_auth_url"/>
+                            <field name="pesapal_order_url"/>
+                            <field name="pesapal_callback_url"/>
+                            <field name="pesapal_txn_status_url"/>
+                            <field name="pesapal_currency_id"/>
+                            <field name="pesapal_ipn_id" placeholder="36d3b4b0-aa3d-4d2f-9ed5-dfda671a1886"/>
+                            <field name="pesapal_token_expiry_date"/>
+                            <field name="redirect_form_view_id"/>
+                        </group>
+                </group>
+                    
+            </field>
+        </record>
+
+         
+        <record id="transaction_form_pesapal" model="ir.ui.view">
+            <field name="name">PesaPal Transaction Details Form</field>
+            <field name="model">payment.transaction</field>
+            <field name="inherit_id" ref="payment.payment_transaction_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='provider_id']" position='after'>
+                    <field name="pesapal_payment_method"/>
+                    <field name="pesapal_payment_account"/>
+                    <field name="pesapal_tracking_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

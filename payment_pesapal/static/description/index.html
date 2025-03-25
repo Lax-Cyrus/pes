@@ -1,0 +1,193 @@
+<section class="oe_container oe_dark">
+    <div class="mt32 mb32">
+        <div class="col-md-12 float-left">
+            <h2 class="oe_slogan">PesaPal Payment Acquirer for Odoo ecommerce</h2>
+            <h3 class="oe_slogan">Accept Card & Mobile Money Payments on your Odoo E-commerce website or customer portal using PesaPal</h3>
+            <h3 class="oe_slogan">Based on Pesapal API 3.0</h3>
+            <h4 class="oe_slogan"><span class="label label-info orders_label_text_align"> <span class="fa fa-star-o fa-spin"/> New Version 15.0.0.1.2 released on Wed, 01 Mar 2023 00:51:18 +0300
+                    </span></h4>
+        </div>
+    </div>
+</section>
+
+<!--ONE-->
+<section>
+    <div class="container mt32">
+        <div class="col-md-12 float-left mb32">
+            <h4 class="oe_slogan"><span class="label label-success orders_label_text_align"> <span class="fa fa-check"/> Accept Payment On Your Website</h4>
+            <div class="col-md-6 float-left">
+                <div class="text-center">
+                    <img style="display:inline-block;" class="oe_picture oe_screenshot" src="pesapal1.gif">
+                </div>
+            </div>
+            <div class="col-md-6 float-left">
+                <div class="text-center">
+                    <div class="dt-iconboxes layout-6 text-center">
+                        <div class="dt-iconboxes-text mt32">
+                            <p style="text-align: justify;">
+                            You can configure PesaPal to receive payment for your products and services published on your website. Customers will be redirected to PesaPal Payment Portal to make payment using available payment methods such as MPESA, Airtel Money, Tigo Pesa, Equity Bank, Coop Bank and many more. These options will vary depending on your country. PesaPal is currently available in more than 6 countries in Africa and rapidly expanding to more regions</p> 
+                            <p style="text-align: justify;">
+                            Once Payment is received and validated by PesaPal, this module will automatically reconcile and confirm the Sales Order based on Transaction details received from PesaPal. The transaction details are securely transmitted between your Odoo website and PesaPal payment portal. This module was carefully designed as per the guidelines given in PesaPal API documentation and Odoo Payment Acquirer design rules to ensure top performance and maximum security. 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container mt32">
+        <div class="col-md-12 float-left mb32">
+            <h4 class="oe_slogan"><span class="label label-success orders_label_text_align"> <span class="fa fa-check"/> Accept Payment On Customer Portal</h4>
+            <div class="col-md-6 float-left">
+                <div class="text-center">
+                    <div class="dt-iconboxes layout-6 text-center">
+                        <div class="dt-iconboxes-text mt128">
+                            <p style="text-align: justify;">
+                            Give your customers the convenience to pay for their invoices directly from their customer portal (this needs to be enabled in Odoo). Once they login to their portal, they can choose to pay for their due invoices by selecting PesaPal method. They will then be re-directed to PesaPal payment portal to make the payment. Once the payment is done, they will be automatically re-directed back to their portal where they can confirm that the invoice has been marked as <code>Paid</code> after successful PesaPal Transaction.</p> 
+                            <p style="text-align: justify;"> 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 float-left">
+                <div class="text-center mt64">
+                    <img style="display:inline-block;" class="oe_picture oe_screenshot" src="pesapal2.gif">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container mt32">
+        <div class="col-md-12 float-left mb32">
+            <div class="col-md-6 float-left">
+                <div class="text-center">
+                    <div class="dt-iconboxes layout-6 text-center">
+                        <i class="fa fa-bolt fa-4x"></i>
+                        <h4>Instant Payment Notification (IPN)</h4>
+                        <div class="dt-iconboxes-text">
+                            <p style="text-align: justify;"> PesaPal provides for Instant Payment Notification (IPN) function. Your system will be notified whenever there is a change in transaction status. This module will be listening to such notifications from PesaPal and immediately reconcile the sales order accordingly. If for some reason you cannot use IPN, this module provides for automatic querying of PesaPal to retrieve the latest transaction status. The time interval between queries and the number of queries/retries is configured in the settings. We do recommend IPN function as it is more efficient.    
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 float-left">
+                <div class="text-center">
+                    <div class="dt-iconboxes layout-6">
+                        <span class="fa fa-money fa-4x"></span>
+                        <h4>Processing Fees</h4>
+                        <div class="dt-iconboxes-text">
+                            <p style="text-align: justify;">You can charge processing/handling fees for every order placed by customer. The fee is computed and automatically added to the amount of the order before sending the payment details to PesaPal. The method used to compute the fees is configured in the settings. You can put a flat fee or a percentage of the order amount or define a formula based on other parameters such as country of origin of the customer, your country, currency, time of the day or even the PesaPal account that you are using. Charging of processing fees is disabled by default and you will need to enable and configure this in the settings.     
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container mt32">
+        <div class="col-md-12 float-left mb32">
+            <div class="col-md-6 float-left">
+                <div class="text-center">
+                    <div class="dt-iconboxes layout-6">
+                        <i class="fa fa-share-alt fa-4x"></i>
+                        <h4>Multiple Payment Methods</h4>
+                        <div class="dt-iconboxes-text">
+                            <p style="text-align: justify;"> Depending on your country of origin, PesaPal will avail all supported methods of payment to your customer during payment. For example in Kenya, the customer will have about 8 different methods to choose from such as VISA, Mastercard, American Express, M-PESA, Airtel Money, Equity Bank, Coop Bank or PesaPal Wallet itself. This module will not limit the customer to one or some few methods but all available methods. You can visit pesapal.com for latest info available methods in your country. This module also supports multi-currency environment so that payment can be made in a currency convenient to your customer. PesaPal will handle exchange rates during payment 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 float-left">
+                <div class="text-center">
+                    <div class="dt-iconboxes layout-6">
+                        <i class="fa fa-cogs fa-4x"></i>
+                        <h4>Test vs Production/Live Mode</h4>
+                        <div class="dt-iconboxes-text">
+                            <p style="text-align: justify;"> When you install this module for the first time, the PesaPal payment gateway will be put in Test mode to allow you to do some testing before going live. If you want to test it first, you will require the <code>Test Consumer Key</code> and <code>Test Consumer Secret</code> both issued by PesaPal (https://demo.pesapal.com). This module supports both <code>Test Mode</code> and <code>Live mode</code> without having to change anything in the configuration except the credentials. This will enable you to perform your tests within a short time and quickly switch to Live mode in a click of a button. 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--TWO-->
+<section class="oe_container oe_dark">
+    <div class="mt32">
+        <div class="col-md-12 float-left mb32">
+            <h4 class="oe_slogan">Main PesaPal Configurations</h4>
+            <div class="dt-iconboxes-text">
+                <p style="text-align: justify;"> 
+                <h5 class="oe_slogan">Go To: Accounting <span class="fa fa-long-arrow-right"/> Configurations <span class="fa fa-long-arrow-right"/> Payments <span class="fa fa-long-arrow-right"/> Payment Acquirers <span class="fa fa-long-arrow-right"/ > PesaPal</h5>
+                </p>
+            </div>
+            <div class="text-center">
+                <img style="display:inline-block;" class="oe_picture oe_screenshot" src="main_conf.png">
+            </div>
+            <div class="text-center">
+                <img style="display:inline-block;" class="oe_picture oe_screenshot" src="main_conf2.png">
+            </div>
+        </div>
+    </div>
+</section>
+<section class="oe_container oe_dark">
+    <div class="mt32">
+        <div class="col-md-12 float-left mb32">
+            <h4 class="oe_slogan">Other PesaPal Configurations</h4>
+            <div class="text-center">
+                <h5 class="oe_slogan">Go To: Accounting <span class="fa fa-long-arrow-right"/> Configurations <span class="fa fa-long-arrow-right"/> Payments <span class="fa fa-long-arrow-right"/> Payment Acquirers <span class="fa fa-long-arrow-right"/ > PesaPal</h5>
+            </div>
+            <div class="text-center">
+                <img style="display:inline-block;" class="oe_picture oe_screenshot" src="other_conf1.png">
+            </div>
+            <div class="text-center">
+                <img style="display:inline-block;" class="oe_picture oe_screenshot" src="other_conf2.png">
+            </div>
+            <div class="text-center">
+                <img style="display:inline-block;" class="oe_picture oe_screenshot" src="other_conf3.png">
+            </div>
+        </div>
+    </div>
+</section>
+<section class="container">
+    <div class="oe_dark oe_quote">
+        <div class="col-md-12 float-left">
+            <div class="col-md-6 float-left">
+                <h2 class="oe_slogan">Odoo Support Services</h2>
+                <h3 class="oe_slogan">For bug reporting and fixing, enjoy our odoo support and development services from experienced team in Kenya</h3>
+                <q>
+                    We are a highly qualified team of well-rounded software engineers and applications systems integrators specialised in open source ERP solutions for SMEs all over the world 
+                </q>
+            </div>
+            <div class="col-md-6 float-left text-center">
+                <div class="col-md-12 float-left mt92">
+                    <div class="col-md-6 float-left text-left">
+                        <div class="oe_author">Contacts</div>
+                        <div class="oe_job"><i class="fa fa-envelope"></i> <span><a href="mailto:Optima ICT<support@optima.co.ke>" target="_blank">support@optima.co.ke</a></span></div>
+                        <div class="oe_job"></br><i class="fa fa-mobile fa-2x"></i> <span><a href="tel:+254715956855" target="_blank">+254 715 956 855</a></span></div>
+                        <div class="oe_job"></br><i class="fa fa-phone-square"></i> <span><a href="tel:+254204405077" target="_blank">+254 776 519 392</a></span></div>
+                        <div class="oe_job"></br><i class="fa fa-skype"></i> <span><a href="skype:kamoing" target="_blank">kamoing</a></span></div>
+                        <div class="oe_job"></br><i class="fa fa-facebook-square"></i> <span><a href="https://www.facebook.com/OptimaICT/" target="_blank">OptimaICT</a></span></div>
+                        <div class="oe_job"></br><i class="fa fa-google-plus-square"></i> <span><a href="https://plus.google.com/+optimaCoKeICT" target="_blank">+optimaCoKeICT</a></span></div>
+                        <div class="oe_job"></br><i class="fa fa-twitter-square"></i> <span><a href="https://twitter.com/optima_ICT" target="_blank">@optima_ICT</a></span></div>
+                        <div class="oe_job"></br><i class="fa fa-globe"></i> <span><a href="http://www.optima.co.ke" target="_blank">www.optima.co.ke</a></span></div>
+                    </div>
+                    <div class="col-md-6 float-left">
+                        <img class="oe_photo" src="optima-odoo.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
