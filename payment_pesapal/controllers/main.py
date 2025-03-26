@@ -77,6 +77,6 @@ class PesaPalController(http.Controller):
         else:
             # No matching transaction found; log and skip
             LOGGER.warning(_("PESAPAL: No transaction matching the IPN data received"))
-            return Response("OK", status=200)  # Acknowledge receipt of IPN
+            return Response("OK", status=200)  # receive receipt of IPN
 
         return Response("OK", status=200)
