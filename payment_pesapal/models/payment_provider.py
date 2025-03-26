@@ -44,14 +44,18 @@ class PaymentAcquirerPesapal(models.Model):
         existing_txn = self.env["payment.transaction"].search([
             ("reference", "=", reference),
             ("provider_code", "=", "pesapal"),
+            ("state", "!=", "cancel"),  # Ensure we don't reuse a canceled transaction
         ], limit=1)
 
         if existing_txn:
+            if existing_txn.state == "done":
+                LOGGER.warning("PESAPAL: Duplicate order detected, but the previous one is already completed. Skipping.")
+                return existing_txn
             LOGGER.warning("PESAPAL: Duplicate order detected for reference %s", reference)
-            return existing_txn  # Return existing transaction instead of creating a new one
+            return existing_txn
 
         # Currency conversion if needed
-        # if int(data.get("currency_id")) != self.pesapal_currency_id.id:
+        if int(data.get("currency_id")) != self.pesapal_currency_id.id:
             amount = self.env["res.currency"].browse([int(data.get("currency_id"))])._convert(
                 from_amount=float(amount),
                 company=self.company_id,
