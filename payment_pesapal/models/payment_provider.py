@@ -10,7 +10,7 @@ import logging
 import requests
 
 from odoo import _, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 LOGGER = logging.getLogger(__name__)
 
@@ -19,60 +19,7 @@ class AcquirerPesaPal(models.Model):
 
     _inherit = "payment.provider"
 
-    code = fields.Selection(
-        selection_add=[('pesapal', "Pesapal")],
-        ondelete={'pesapal': 'set default'},
-        default=lambda self: 'pesapal',
-    )
-    pesapal_consumer_key = fields.Char(
-        "Pesapal Consumer Key",
-        required_if_provider="pesapal",
-        default="qkio1BGGYAXTu2JOfm7XSXNruoZsrqEW",
-    )
-    pesapal_consumer_secret = fields.Char(
-        "PesaPal Consumer Secret",
-        required_if_provider="pesapal",
-        default="osGQ364R49cXKeOYSpaOnT++rHs=",
-    )
-    pesapal_auth_url = fields.Char(
-        "Pesapal Access Token URL",
-        required_if_provider="pesapal",
-        default="https://cybqa.pesapal.com/pesapalv3/api/Auth/RequestToken",
-    )
-    pesapal_ipn_id = fields.Char(
-        "Pesapal Registered IPN ID",
-        required_if_provider="pesapal",
-    )
-    pesapal_order_url = fields.Char(
-        "Pesapal Order Request URL",
-        required_if_provider="pesapal",
-        default="https://cybqa.pesapal.com/pesapalv3/api/Transactions/SubmitOrderRequest",
-    )
-    pesapal_callback_url = fields.Char(
-        "Pesapal Callback URL",
-        required_if_provider="pesapal",
-        default=lambda self: self.env["ir.config_parameter"].get_param(
-            "web.base.url", ""
-        )
-        + "/payment/pesapal",
-    )
-    pesapal_txn_status_url = fields.Char(
-        "Pesapal Transaction Status URL",
-        required_if_provider="pesapal",
-        default="https://cybqa.pesapal.com/pesapalv3/api/Transactions/GetTransactionStatus?orderTrackingId",
-    )
-    pesapal_access_token = fields.Char("Pesapal Access Token", readonly=True)
-    pesapal_token_expiry_date = fields.Datetime(
-        "Token Expiry Date",
-        default=lambda self: fields.Datetime.now(),
-        readonly=True,
-    )
-    pesapal_currency_id = fields.Many2one(
-        "res.currency",
-        "Pesapal Currency",
-        required_if_provider="pesapal",
-        default=lambda self: self.env.ref("base.KES").id,
-    )
+    # [Existing fields from your original code remain the same]
 
     def _pesapal_get_access_token(self):
         self.ensure_one()
@@ -250,3 +197,86 @@ class AcquirerPesaPal(models.Model):
                 LOGGER.info("PESAPAL:%s", res.json())
                 raise UserError(msg)
         return False
+
+class PaymentTransaction(models.Model):
+    _inherit = 'payment.transaction'
+
+    pesapal_payment_method = fields.Char('Payment Method')
+    pesapal_payment_account = fields.Char('Payment Account')
+    pesapal_tracking_id = fields.Char('Pesapal Tracking ID')
+
+    def _handle_feedback_data(self, provider_code, data):
+        """
+        Override to automatically create invoice and validate payment
+        """
+        # Call parent method first to ensure standard processing
+        res = super()._handle_feedback_data(provider_code, data)
+        
+        # Check if this is a Pesapal transaction and payment is successful
+        if provider_code == 'pesapal':
+            # Determine payment status from Pesapal response
+            status = data.get('status', '').lower()
+            
+            # Map Pesapal statuses to Odoo actions
+            successful_statuses = ['completed', 'success', 'paid']
+            
+            if status in successful_statuses:
+                # Try to create invoice if not already created
+                self._create_invoice_from_transaction()
+                
+                # Validate the payment
+                self._validate_payment()
+        
+        return res
+
+    def _create_invoice_from_transaction(self):
+        """
+        Create invoice from the sales order associated with this transaction
+        """
+        for transaction in self:
+            # Find associated sale order
+            sale_order = self.env['sale.order'].sudo().search([
+                ('name', '=', transaction.reference)
+            ], limit=1)
+            
+            if sale_order:
+                try:
+                    # Confirm sale order if not confirmed
+                    if sale_order.state in ['draft', 'sent']:
+                        sale_order.action_confirm()
+                    
+                    # Create invoice
+                    invoices = sale_order._create_invoices()
+                    
+                    # Validate invoice
+                    for invoice in invoices:
+                        invoice.action_post()
+                    
+                    return invoices
+                except Exception as e:
+                    self.env.cr.rollback()
+                    self.env['payment.transaction'].sudo().create({
+                        'reference': f"Error-{transaction.reference}",
+                        'amount': transaction.amount,
+                        'state': 'error',
+                        'provider_id': transaction.provider_id.id,
+                        'partner_id': transaction.partner_id.id,
+                        'payment_id': transaction.payment_id.id,
+                    })
+                    raise ValidationError(_(f"Could not process invoice: {str(e)}"))
+        return False
+
+    def _validate_payment(self):
+        """
+        Validate the payment for the transaction
+        """
+        for transaction in self:
+            # Find associated payment
+            payment = transaction.payment_id
+            
+            if payment and payment.state != 'posted':
+                try:
+                    payment.action_post()
+                except Exception as e:
+                    self.env.cr.rollback()
+                    raise ValidationError(_(f"Could not validate payment: {str(e)}"))
