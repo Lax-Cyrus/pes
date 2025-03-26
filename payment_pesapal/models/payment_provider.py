@@ -7,10 +7,15 @@ LOGGER = logging.getLogger(__name__)
 class PaymentAcquirerPesapal(models.Model):
     _inherit = "payment.provider"
 
+    pesapal_consumer_key = fields.Char("Pesapal Consumer Key", required=True)
+    pesapal_consumer_secret = fields.Char("Pesapal Consumer Secret", required=True)
+    pesapal_auth_url = fields.Char("Pesapal Auth URL", required=True)
     pesapal_order_url = fields.Char("Pesapal Order URL", required=True)
-    pesapal_currency_id = fields.Many2one("res.currency", string="Pesapal Currency")
     pesapal_callback_url = fields.Char("Callback URL", required=True)
+    pesapal_txn_status_url = fields.Char("Pesapal Transaction Status URL", required=True)
+    pesapal_currency_id = fields.Many2one("res.currency", string="Pesapal Currency")
     pesapal_ipn_id = fields.Char("IPN Notification ID", required=True)
+    pesapal_token_expiry_date = fields.Datetime("Token Expiry Date", readonly=True)
 
     def _pesapal_get_access_token(self):
         """Get access token from Pesapal."""
@@ -114,6 +119,8 @@ class PaymentTransactionPesapal(models.Model):
     _inherit = "payment.transaction"
 
     pesapal_tracking_id = fields.Char("Pesapal Tracking ID")
+    pesapal_payment_method = fields.Char("Payment Method", readonly=True)
+    pesapal_payment_account = fields.Char("Payment Account", readonly=True)
 
     def _pesapal_check_status(self):
         """Check the payment status from Pesapal."""
@@ -128,7 +135,7 @@ class PaymentTransactionPesapal(models.Model):
 
             try:
                 res = requests.get(
-                    f"{transaction.provider_id.pesapal_status_url}/{tracking_id}",
+                    f"{transaction.provider_id.pesapal_txn_status_url}/{tracking_id}",
                     headers={
                         "Authorization": "Bearer %s" % transaction.provider_id._pesapal_get_access_token(),
                         "Accept": "application/json",
